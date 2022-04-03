@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/POLBAN/SEMESTER 4/PPB Mobile/Praktikum/Pertemuan 6/Students/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/POLBAN/SEMESTER 4/PPB Mobile/Praktikum/Pertemuan 6/Students/app/src/main/res/layout/activity_list_siswa.xml" value="0.20416666666666666" />
+        <entry key="..\:/POLBAN/SEMESTER 4/PPB Mobile/Praktikum/Pertemuan 6/Students/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/POLBAN/SEMESTER 4/PPB Mobile/Praktikum/Pertemuan 6/Students/app/src/main/res/layout/activity_tambah_kelas.xml" value="0.19010416666666666" />
+        <entry key="..\:/POLBAN/SEMESTER 4/PPB Mobile/Praktikum/Pertemuan 6/Students/app/src/main/res/layout/activity_tambah_siswa.xml" value="0.20416666666666666" />
+        <entry key="..\:/POLBAN/SEMESTER 4/PPB Mobile/Praktikum/Pertemuan 6/Students/app/src/main/res/layout/activity_update_kelas.xml" value="0.20416666666666666" />
+        <entry key="..\:/POLBAN/SEMESTER 4/PPB Mobile/Praktikum/Pertemuan 6/Students/app/src/main/res/layout/item_kelas.xml" value="0.20416666666666666" />
+        <entry key="..\:/POLBAN/SEMESTER 4/PPB Mobile/Praktikum/Pertemuan 6/Students/app/src/main/res/layout/item_siswa.xml" value="0.128125" />
       </map>
     </option>
   </component>

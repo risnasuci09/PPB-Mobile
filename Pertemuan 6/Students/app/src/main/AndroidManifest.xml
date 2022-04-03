@@ -10,14 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Students">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".activities.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.TambahKelasActivity" />
+        <activity
+            android:name=".activities.UpdateKelasActivity" />
+        <activity
+            android:name=".activities.ListSiswaActivity" />
+        <activity android:name=".activities.TambahSiswaActivity" />
     </application>
 
 </manifest>

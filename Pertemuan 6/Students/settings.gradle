@@ -10,6 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url 'http://dl.bintray.com/amulyakhare/maven'
+        }
     }
 }
 rootProject.name = "Students"
