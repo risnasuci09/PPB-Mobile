@@ -90,4 +90,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
     }
 
+    public interface HistoryAdapterCallback {
+        void onDelete(ModelDatabase modelDatabase);
+    }
+
 }
