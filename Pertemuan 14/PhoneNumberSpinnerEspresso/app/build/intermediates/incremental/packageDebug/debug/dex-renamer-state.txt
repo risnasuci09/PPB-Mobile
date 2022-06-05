@@ -1,0 +1,4 @@
+#Mon Jul 12 17:24:54 ICT 2021
+base.0=D\:\\ANDROIDSTUDIO\\PhoneNumberSpinnerEspresso\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex
