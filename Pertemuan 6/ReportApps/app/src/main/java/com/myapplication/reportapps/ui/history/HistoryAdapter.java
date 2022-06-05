@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -72,6 +73,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         public TextView tvKategori, tvNama, tvDate, tvLokasi;
         public CardView cvHistory;
+        public Button btnDiterima;
         public LinearLayout layoutHeader;
 
         public ViewHolder(View itemView) {
@@ -81,17 +83,23 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             tvDate = itemView.findViewById(R.id.tvDate);
             tvLokasi = itemView.findViewById(R.id.tvLokasi);
             cvHistory = itemView.findViewById(R.id.cvHistory);
+            btnDiterima = itemView.findViewById(R.id.btn_diterima);
             layoutHeader = itemView.findViewById(R.id.layoutHeader);
 
-            cvHistory.setOnClickListener(view -> {
+            btnDiterima.setOnClickListener(view -> {
                 ModelDatabase modelLaundry = modelDatabase.get(getAdapterPosition());
                 mAdapterCallback.onDelete(modelLaundry);
+            });
+            cvHistory.setOnClickListener(view -> {
+                ModelDatabase modelLaundry = modelDatabase.get(getAdapterPosition());
+                mAdapterCallback.onClick(modelLaundry);
             });
         }
     }
 
     public interface HistoryAdapterCallback {
         void onDelete(ModelDatabase modelDatabase);
+        void onClick(ModelDatabase modelDatabase);
     }
 
 }

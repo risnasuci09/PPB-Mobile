@@ -3,6 +3,10 @@ package com.myapplication.reportapps.ui.report;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -40,6 +44,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.myapplication.reportapps.service.NotificationJobService;
 import com.myapplication.reportapps.utils.BitmapManager;
 import com.myapplication.reportapps.utils.Constant;
 import com.myapplication.reportapps.viewmodel.InputDataViewModel;
@@ -66,6 +71,9 @@ public class ReportActivity extends AppCompatActivity {
     LinearLayout layoutImage;
     ExtendedFloatingActionButton fabSend;
     EditText inputNama, inputTelepon, inputLokasi, inputTanggal, inputLaporan;
+    private JobScheduler mScheduler;
+    private static final int JOB_ID = 1;
+    private static final long TIME_INTERVAL = 7200000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,11 +208,42 @@ public class ReportActivity extends AppCompatActivity {
                 Toast.makeText(ReportActivity.this, "Data tidak boleh ada yang kosong!", Toast.LENGTH_SHORT).show();
             } else {
                 inputDataViewModel.addLaporan(strTitle, strBase64Photo, strNama, strLokasi, strTanggal, strLaporan, strTelepon);
+                boolean serviceOn = isJobServiceOn(this);
+                if(!serviceOn){
+                    scheduleJob();
+                }
                 Toast.makeText(ReportActivity.this, "Laporan Anda terkirim, tunggu info selanjutnya ya!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
     }
+
+    private void scheduleJob(){
+        int selectedNetworkOption = JobInfo.NETWORK_TYPE_ANY;
+        ComponentName serviceName = new ComponentName(getPackageName(),
+                NotificationJobService.class.getName());
+        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, serviceName);
+        builder.setRequiredNetworkType(selectedNetworkOption);
+        builder.setPeriodic(TIME_INTERVAL);
+        mScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        JobInfo myJobInfo = builder.build();
+        mScheduler.schedule(myJobInfo);
+    }
+
+    public static boolean isJobServiceOn(Context context ) {
+        JobScheduler scheduler = (JobScheduler) context.getSystemService( Context.JOB_SCHEDULER_SERVICE ) ;
+        boolean hasBeenScheduled = false ;
+        for ( JobInfo jobInfo : scheduler.getAllPendingJobs() ) {
+            if ( jobInfo.getId() == JOB_ID ) {
+                hasBeenScheduled = true ;
+                break ;
+            }
+        }
+        return hasBeenScheduled ;
+    }
+
+
+
 
     private File createImageFile() throws IOException {
         strTimeStamp = new SimpleDateFormat("dd MMMM yyyy HH:mm").format(new Date());

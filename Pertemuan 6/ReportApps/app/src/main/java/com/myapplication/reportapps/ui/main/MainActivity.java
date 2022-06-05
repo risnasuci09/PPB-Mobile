@@ -3,9 +3,14 @@ package com.myapplication.reportapps.ui.main;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -16,11 +21,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.myapplication.reportapps.R;
+import com.myapplication.reportapps.service.NotificationJobService;
 import com.myapplication.reportapps.ui.history.HistoryActivity;
 import com.myapplication.reportapps.ui.report.ReportActivity;
 import com.myapplication.reportapps.utils.Constant;
+import com.myapplication.reportapps.viewmodel.HistoryViewModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,8 +43,11 @@ public class MainActivity extends AppCompatActivity {
     double strCurrentLongitude;
     String strCurrentLocation, strTitle;
     SimpleLocation simpleLocation;
+    HistoryViewModel historyViewModel;
     CardView cvPemadam, cvAmbulance, cvBencana, cvHistory;
-
+    private JobScheduler mScheduler;
+    private static final int JOB_ID = 1;
+    private static final long TIME_INTERVAL = 7200000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +58,56 @@ public class MainActivity extends AppCompatActivity {
         setLocation();
         setInitLayout();
         setCurrentLocation();
+
+        boolean serviceOn = isJobServiceOn(this);
+        if(!serviceOn){
+            cekAllData();
+        }
+    }
+
+    private void scheduleJob(){
+        int selectedNetworkOption = JobInfo.NETWORK_TYPE_ANY;
+        ComponentName serviceName = new ComponentName(getPackageName(),
+                NotificationJobService.class.getName());
+        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, serviceName);
+        builder.setRequiredNetworkType(selectedNetworkOption);
+        builder.setPeriodic(TIME_INTERVAL);
+        mScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        JobInfo myJobInfo = builder.build();
+        mScheduler.schedule(myJobInfo);
+        Toast.makeText(this, "Job Scheduled", Toast.LENGTH_SHORT).show();
+    }
+
+    public static boolean isJobServiceOn(Context context ) {
+        JobScheduler scheduler = (JobScheduler) context.getSystemService( Context.JOB_SCHEDULER_SERVICE ) ;
+        boolean hasBeenScheduled = false ;
+        for ( JobInfo jobInfo : scheduler.getAllPendingJobs() ) {
+            if ( jobInfo.getId() == JOB_ID ) {
+                hasBeenScheduled = true ;
+                break ;
+            }
+        }
+        return hasBeenScheduled ;
+    }
+
+    private void cekAllData() {
+        historyViewModel = ViewModelProviders.of(this).get(HistoryViewModel.class);
+        historyViewModel.getDataLaporan().observe(this, modelDatabases -> {
+            if (modelDatabases.isEmpty()) {
+                cancelJobs();
+            } else {
+                scheduleJob();
+            }
+        });
+    }
+
+
+    private void cancelJobs(){
+        if (mScheduler!=null){
+            mScheduler.cancelAll();
+            mScheduler = null;
+            Toast.makeText(this, "Jobs cancelled", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setLocation() {

@@ -71,15 +71,17 @@
             android:textColor="@color/black"
             android:textSize="12sp" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_diterima"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/blue"
             android:text="Laporan Diterima"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
 

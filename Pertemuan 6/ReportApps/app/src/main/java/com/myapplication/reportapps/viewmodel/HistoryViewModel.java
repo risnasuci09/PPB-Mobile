@@ -19,6 +19,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class HistoryViewModel extends AndroidViewModel {
 
     LiveData<List<ModelDatabase>> modelLaundry;
+    LiveData<ModelDatabase> modelDatabase;
     DatabaseDao databaseDao;
 
     public HistoryViewModel(@NonNull Application application) {
@@ -30,6 +31,10 @@ public class HistoryViewModel extends AndroidViewModel {
 
     public LiveData<List<ModelDatabase>> getDataLaporan() {
         return modelLaundry;
+    }
+    public LiveData<ModelDatabase> getDataLaporanById(int uid) {
+        modelDatabase = databaseDao.getReportByUid(uid);
+        return modelDatabase;
     }
 
     public void deleteDataById(final int uid) {

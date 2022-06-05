@@ -24,6 +24,9 @@
             android:name=".ui.history.HistoryActivity"
             android:exported="true" />
         <activity
+            android:name=".ui.history.HistoryDetailActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.report.ReportActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
@@ -33,7 +36,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -47,6 +49,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <service
+            android:name=".service.NotificationJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>
